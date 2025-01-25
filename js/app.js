@@ -2,6 +2,12 @@ let amigos = [];
 
 function adicionar() {
     let amigo = document.getElementById('nome-amigo');
+
+    if(amigo == ''){
+        alert('Informe o nome do amigo');
+        return;
+    }
+
     let lista = document.getElementById('lista-amigos');
     
     amigos.push(amigo.value);
@@ -12,10 +18,14 @@ function adicionar() {
         lista.textContent = lista.textContent + ', ' + amigo.value;
     }
     amigo.value = '';
+
+    atualizarLista();
+    atualizarSorteio();
 }
 
 function sortear(){
     embaralha(amigos);
+
     let sorteio = document.getElementById('lista-sorteio');
     sorteio.innerHTML = '';
 
@@ -42,3 +52,43 @@ function embaralha(lista){
             [lista[indiceAleatorio], lista[indice - 1]];
     }
 }
+
+function reiniciar(){
+    amigos = [];
+    document.getElementById('lista-amigos').innerHTML = '';
+    document.getElementById('lista-sorteio').innerHTML='';
+
+}
+function excluirAmigo(index) {
+    amigos.splice(index, 1);
+    atualizarLista();
+    atualizarSorteio();
+}
+
+function atualizarSorteio() {
+    let sorteio = document.getElementById('lista-sorteio');
+    sorteio.innerHTML = '';
+}
+
+function atualizarLista() {
+    let lista = document.getElementById('lista-amigos');
+    lista.innerHTML = '';
+
+
+    for (let i = 0; i < amigos.length; i++) {
+        // Cria um elemento de parágrafo para cada amigo
+        let paragrafo = document.createElement('p');
+        paragrafo.textContent = amigos[i];
+       
+        // Adiciona um evento de clique para excluir o amigo
+        paragrafo.addEventListener('click', function() {
+            excluirAmigo(i);
+        });
+
+
+        // Adiciona o parágrafo à lista
+        lista.appendChild(paragrafo);
+    }
+}
+
+// Função para remover duplicatas de um array
